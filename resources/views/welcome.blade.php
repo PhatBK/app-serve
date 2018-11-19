@@ -91,14 +91,19 @@
     <script>
     (function(window, videojs){
 
-        const ajaxSendData = (data, event, url) => {
+        let player = videojs('videojs-event-tracking-player');
+        player.eventTracking();
+
+        var host = 'http://192.168.1.18:9001/logs';
+
+        const ajaxSendDataNodejs = (data, event, url) => {
             let dataSend = [];
             let reports = {
               'event' : event,
               'data' : data,
             };
             $.ajax({
-                url: "http://10.79.0.82:3000/logs/event",
+                url: url,
                 type: "POST",
                 contentType: "application/json",
                 data: JSON.stringify(reports),
@@ -112,9 +117,28 @@
                 }
             });
         }
-
-        let player = videojs('videojs-event-tracking-player');
-        player.eventTracking();
+        const ajaxSendDataPHP = (data, event, url) => {
+            $.ajaxSetup({
+                  headers: {
+                      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                  }
+            });
+            e.preventDefault();
+            $.ajax({
+                url : url,
+                data : {
+                  'data' : data,
+                  'category': event,
+                },
+                type : 'post',
+                success : function(response) {
+                  console.log(response);
+                },
+                error : function(error) {
+                  console.log(error);
+                }
+            });
+        }
 
         player.eventTracking({
             performance: function(data) {
@@ -124,181 +148,58 @@
 
         player.on('tracking:firstplay', function(e, data) {
             // console.log(e.type, data);
-            // $.ajaxSetup({
-            //       headers: {
-            //           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            //       }
-            // });
-            // let url = `{{ route('sendlogFirstPlay') }}`;
-            // let data_send = data;
-            // e.preventDefault();
-            // $.ajax({
-            //     url : url,
-            //     data : {
-            //       'data' : data_send,
-            //       'category': e.type,
-            //     },
-            //     type : 'post',
-            //     success : function(response) {
-            //       console.log(response[0]);
-            //       console.log(response[1]);
-            //     },
-            //     error : function(error) {
-            //       console.log(error);
-            //     }
-            // });
-            ajaxSendData(data, e);
+            url = host + '/event/first-play';
+            ajaxSendDataNodejs(data, e, url);
         
         });
 
         player.on('tracking:pause', function(e, data) {
             // console.log(e.type, data);
-            // $.ajaxSetup({
-            //       headers: {
-            //           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            //       }
-            // });
-            // let url = `{{ route('sendlogPause') }}`;
-            // let data_send = data;
-            // e.preventDefault();
-            // $.ajax({
-            //     url : url,
-            //     data : {
-            //       'data' : data_send,
-            //       'category': e.type,
-            //     },
-            //     type : 'post',
-            //     success : function(response) {
-            //       console.log(response[0]);
-            //       console.log(response[1]);
-            //     },
-            //     error : function(error) {
-            //       console.log(error);
-            //     }
-            // });
-            ajaxSendData(data, e);
+            url = host + '/event/plause';
+            ajaxSendDataNodejs(data, e, url);
            
         });
 
         player.on('tracking:first-quarter', function(e, data) {
             // console.log(e.type, data);
-            // $.ajaxSetup({
-            //       headers: {
-            //           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            //       }
-            // });
-            // let url = `{{ route('sendlogFirstQuarter') }}`;
-            // let data_send = data;
-            // e.preventDefault();
-            // $.ajax({
-            //     url : url,
-            //     data : {
-            //       'data' : data_send,
-            //       'category': e.type,
-            //     },
-            //     type : 'post',
-            //     success : function(response) {
-            //       console.log(response[0]);
-            //       console.log(response[1]);
-            //     },
-            //     error : function(error) {
-            //       console.log(error);
-            //     }
-            // });
-            ajaxSendData(data, e);
+            url = host + '/event/first-quarter';
+            ajaxSendDataNodejs(data, e, url);
         });
 
         player.on('tracking:second-quarter', function(e, data) {
             // console.log(e.type, data);
-            ajaxSendData(data, e);
+            url = host + '/event/second-quarter';
+            ajaxSendDataNodejs(data, e, url);
         });
 
         player.on('tracking:third-quarter', function(e, data) {
             // console.log(e.type, data);
-            ajaxSendData(data, e);
+            url = host + '/event/third-quarter';
+            ajaxSendDataNodejs(data, e, url);
         });
 
         player.on('tracking:fourth-quarter', function(e, data) {
             // console.log(e.type, data);
-            ajaxSendData(data, e);
+            url = host + '/event/fourth-quarter';
+            ajaxSendDataNodejs(data, e, url);
         });
 
         player.on('tracking:buffered', function(e, data) {
             // console.log(e.type, data);
-            ajaxSendData(data, e);
+            url = host + '/event/buffered';
+            ajaxSendDataNodejs(data, e, url);
         });
 
         player.on('tracking:performance', function(e, data) {
             // console.log(e.type, data);
-            // $.ajaxSetup({
-            //       headers: {
-            //           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            //       }
-            // });
-            // e.preventDefault();
-            // let url = `{{ route('sendlogPerfomance') }}`;
-            // let data_send = data;
-            // $.ajax({
-            //     url : url,
-            //     data : {
-            //       'data' : data_send,
-            //       'category': 'tracking:performance',
-            //     },
-            //     type : 'post',
-            //     success : function(response) {
-            //       console.log(response[0]);
-            //       console.log(response[1]);
-            //     },
-            //     error : function(error) {
-            //       console.log(error);
-            //     }
-            // });
-            ajaxSendData(data, e);
+            url = host + '/event/performance';
+            ajaxSendDataNodejs(data, e, url);
         });
 
         player.on('tracking:seek', function(e, data) {
             // console.log(e.type, data);
-            // $.ajaxSetup({
-            //       headers: {
-            //           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-            //           // 'Content-Type': 'application/json'
-            //       }
-            // });
-            // // let url = `{{ route('sendlogSeek') }}`;
-            // let url = 'http://10.79.0.82:3000/logs/event';
-            // let data_send = data;
-            // e.preventDefault();
-            // $.ajax({
-            //     url : url,
-            //     data : {
-            //       'data' : data_send,
-            //       'category': e.type,
-            //     },
-            //     type : 'post',
-            //     success : function(response) {
-            //       console.log(response[0]);
-            //       console.log(response[1]);
-            //     },
-            //     error : function(error) {
-            //       console.log(error);
-            //     }
-            // });
-
-            // $.ajax({
-            //     url: "http://10.79.0.82:3000/logs/event",
-            //     type: "POST",
-            //     contentType: "application/json",
-            //     data: JSON.stringify(data),
-            //     dataType: "json",
-            //     cache: false, 
-            //     success : function(response) {
-            //       console.log(response);
-            //     },
-            //     error : function(error) {
-            //       console.log(error);
-            //     }
-            // });
-            ajaxSendData(data, e);
+            url = host + '/event/seek';
+            ajaxSendDataNodejs(data, e, url);
         });
     }(window, window.videojs));
     </script>
