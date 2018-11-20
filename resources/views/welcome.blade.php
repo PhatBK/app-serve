@@ -88,7 +88,8 @@
     <script src="https://vjs.zencdn.net/7.3.0/video.js"></script>
     <script src="js/videojs-event-tracking.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <script>
+    <script src="js/log-event.js"></script>
+    {{-- <script>
     (function(window, videojs){
 
         let player = videojs('videojs-event-tracking-player');
@@ -202,5 +203,5 @@
             ajaxSendDataNodejs(data, e, url);
         });
     }(window, window.videojs));
-    </script>
+    </script> --}}
 </html>
