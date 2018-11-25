@@ -71,7 +71,7 @@
                class="video-js" 
                controls 
                preload="auto" 
-               width="400" 
+               width="300" 
                height="250"
                poster="videos/Larva.jpg" 
                data-setup="{}">

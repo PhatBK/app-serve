@@ -5,12 +5,25 @@
 
         var host = 'http://192.168.1.18:9001/logs';
 
+        const user_agent = navigator.userAgent;
+        const browser_code = navigator.appCodeName;
+        const browser_version = navigator.appVersion;
+        const cookie_enable = navigator.cookieEnabled;
+        const browser_language = navigator.language;
+
+        const browser_online = navigator.onLine;
+        const browser_name =  navigator.appName;
+        const user_platform = navigator.platform;
+
         const ajaxSendDataNodejs = (data, event, url, time) => {
             let dataSend = [];
             let reports = {
               'event' : event,
               'data' : data,
               'user_id' : '',
+              'user_platform' : user_platform,
+              'browser_name' : browser_name,
+              'browser_online' : browser_online,
               'time' : time,
             };
             $.ajax({
@@ -53,7 +66,9 @@
 
         player.eventTracking({
             performance: function(data) {
-            // console.log('tracking:performance', data);
+                url = host + '/event/performance';
+                time = Date.now();
+                ajaxSendDataNodejs(data, 'performance', url, time);
             }
         });
 
@@ -67,7 +82,7 @@
 
         player.on('tracking:pause', function(e, data) {
             // console.log(e.type, data);
-            url = host + '/event/plause';
+            url = host + '/event/pause';
             time = Date.now();
             ajaxSendDataNodejs(data, e, url, time);
            
@@ -101,9 +116,9 @@
             ajaxSendDataNodejs(data, e, url, time);
         });
 
-        player.on('tracking:buffered', function(e, data) {
+        player.on('tracking:seek', function(e, data) {
             // console.log(e.type, data);
-            url = host + '/event/buffered';
+            url = host + '/event/seek';
             time = Date.now();
             ajaxSendDataNodejs(data, e, url, time);
         });
@@ -115,10 +130,23 @@
             ajaxSendDataNodejs(data, e, url, time);
         });
 
-        player.on('tracking:seek', function(e, data) {
+        player.on('tracking:buffered', function(e, data) {
             // console.log(e.type, data);
-            url = host + '/event/seek';
+            url = host + '/event/buffered';
             time = Date.now();
             ajaxSendDataNodejs(data, e, url, time);
         });
-    }(window, window.videojs));
+
+        player.on('tracking:buffer_load', function(e, data) {
+            url = host + '/event/buffer_load';
+            time = Date.now();
+            ajaxSendDataNodejs(data, e, url, time);
+        });
+        player.on('tracking:buffer_miss', function(e, data) {
+            url = host + '/event/buffer_miss';
+            time = Date.now();
+            ajaxSendDataNodejs(data, e, url, time);
+        });
+
+        
+}(window, window.videojs));
