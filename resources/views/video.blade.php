@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+        <base href="{{ asset('') }}" target="_blank, _self, _parent, _top">
+        <title>Video Demo</title>
+        <!-- Fonts -->
+        <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet" type="text/css">
+        <link href="https://vjs.zencdn.net/7.3.0/video-js.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="css/css.css">
+        <!-- Styles -->
+    </head>
+    <body>
+        <div class="flex-center position-ref full-height">
+            <div class="content">
+               <video 
+               id="videojs-event-tracking-player" 
+               class="video-js" 
+               controls 
+               preload="auto" 
+               width="300" 
+               height="250"
+               data-setup="{}">
+                <source src="videos/larva_hd720.mp4" type='video/mp4' id="videoID">
+                <source src="MY_VIDEO.webm" type='video/webm'>
+                <p class="vjs-no-js">
+                  To view this video please enable JavaScript, and consider upgrading to a web browser that
+                  <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+                </p>
+              </video>
+            </div>
+        </div>
+    </body>
+    <script src="https://vjs.zencdn.net/7.3.0/video.js"></script>
+    <script src="js/videojs-event-tracking.js"></script>
+    <script src="js/jquery-2.1.3.min.js"></script>
+    <script src="js/log-event.js"></script>
+    <script src="js/ip.js"></script>
+    <script src="js/media_info.js"></script>
+
+</html>

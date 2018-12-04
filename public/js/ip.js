@@ -1,4 +1,4 @@
-var host = 'http://192.168.146.77:9001/users';
+var host = 'http://192.168.1.18:9001/users';
 // send data use Ajax
 const ajaxSendDataNodejs = (ip, src, url, time) => {
     let reports = {

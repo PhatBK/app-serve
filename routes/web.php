@@ -14,6 +14,9 @@
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/video', function() {
+	return view('video');
+});
 
 // Route::post('user/register', 'APIRegisterController@register');
 // Route::post('user/login', 'APILoginController@login');

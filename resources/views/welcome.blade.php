@@ -9,59 +9,7 @@
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet" type="text/css">
         <link href="https://vjs.zencdn.net/7.3.0/video-js.css" rel="stylesheet">
-        <!-- Styles -->
-        <style>
-            html, body {
-                background-color: #fff;
-                color: #636b6f;
-                font-family: 'Nunito', sans-serif;
-                font-weight: 200;
-                height: 100vh;
-                margin: 0;
-            }
-
-            .full-height {
-                height: 100vh;
-            }
-
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
-
-            .position-ref {
-                position: relative;
-            }
-
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 18px;
-            }
-
-            .content {
-                text-align: center;
-            }
-
-            .title {
-                font-size: 84px;
-            }
-
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 13px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
-
-            .m-b-md {
-                margin-bottom: 30px;
-            }
-        </style>
+        <link rel="stylesheet" type="text/css" href="css/css.css">
     </head>
     <body>
         <div class="flex-center position-ref full-height">
@@ -75,7 +23,7 @@
                height="250"
                poster="videos/Larva.jpg" 
                data-setup="{}">
-                <source src="videos/larva.mp4" type='video/mp4'>
+                <source src="videos/larva.mp4" type='video/mp4' id="videoID">
                 <source src="MY_VIDEO.webm" type='video/webm'>
                 <p class="vjs-no-js">
                   To view this video please enable JavaScript, and consider upgrading to a web browser that
@@ -88,8 +36,7 @@
     <script src="https://vjs.zencdn.net/7.3.0/video.js"></script>
     <script src="js/videojs-event-tracking.js"></script>
     <script src="js/jquery-2.1.3.min.js"></script>
-    {{-- <script src="js/jquery-3.3.1.min.js"></script> --}}
-    {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script> --}}
     <script src="js/log-event.js"></script>
     <script src="js/ip.js"></script>
+    <script src="js/media_info.js"></script>
 </html>
