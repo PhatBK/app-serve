@@ -1,16 +1,16 @@
-let media_infos = {
-    'id': null,
-    'name': '',
-    'duration': null,
-    'min_resolution': null,
-    'max_resolution': null,
-    'buffered_start': null,
-    'buffered_load': null,
-    'buffering': null,
-    'watch_time': null,
-    'seek_count': null,
-    'pause_count': null,
-};
+// let media_infos = {
+//     'id': null,
+//     'name': '',
+//     'duration': null,
+//     'min_resolution': null,
+//     'max_resolution': null,
+//     'buffered_start': null,
+//     'buffered_load': null,
+//     'buffering': null,
+//     'watch_time': null,
+//     'seek_count': null,
+//     'pause_count': null,
+// };
 
 let player = videojs('videojs-event-tracking-player');
 

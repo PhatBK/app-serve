@@ -1,19 +1,19 @@
 (function(window, videojs){
 
-        let host = 'http://10.85.1.207:9001/logs';
+        let host = logging_host.host;
+        // let host = 'http://10.85.1.207:9001/logs';
+        // const user_agent = navigator.userAgent;
+        // const browser_code = navigator.appCodeName;
+        // const browser_version = navigator.appVersion;
+        // const cookie_enable = navigator.cookieEnabled;
+        // const browser_language = navigator.language;
 
-        const user_agent = navigator.userAgent;
-        const browser_code = navigator.appCodeName;
-        const browser_version = navigator.appVersion;
-        const cookie_enable = navigator.cookieEnabled;
-        const browser_language = navigator.language;
+        // const browser_online = navigator.onLine;
+        // const browser_name =  navigator.appName;
+        // const user_platform = navigator.platform;
 
-        const browser_online = navigator.onLine;
-        const browser_name =  navigator.appName;
-        const user_platform = navigator.platform;
-
-        console.log(service_code.token);
-        // console.log(ip.ip);
+        // console.log(service_code.token);
+        // console.log(media_infos);
 
         const ajaxSendDataNodejs = (data, event, url, time) => {
             let dataSend = [];
@@ -40,7 +40,7 @@
                   console.log(error);
                 }
             });
-        }
+        };
         const ajaxSendDataPHP = (data, event, url) => {
             $.ajaxSetup({
                   headers: {
@@ -62,7 +62,7 @@
                   console.log(error);
                 }
             });
-        }
+        };
 
         let player = videojs('videojs-event-tracking-player');
         player.eventTracking({

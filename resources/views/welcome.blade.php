@@ -11,7 +11,7 @@
         <link href="https://vjs.zencdn.net/7.3.0/video-js.css" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="css/css.css">
     </head>
-    <body>
+    <body onload="firstRequest()">
         <div class="flex-center position-ref full-height">
             <div class="content">
                <video 
@@ -41,8 +41,14 @@
     <script src="js/utils/config.js"></script>
     <script src="js/utils/device-infos.js"></script>
     <script src="js/utils/user-infos.js"></script>
+    <script src="js/utils/media-infos.js"></script>
     <script src="js/utils/ip.js"></script>
 
     <script src="js/utils/log-event.js"></script>
-    <script src="js/utils/media-info.js"></script>
+    <script src="js/utils/media-event.js"></script>
+    <script>
+      const firstRequest = () => {
+            alert("first request");
+      };
+    </script>
 </html>
