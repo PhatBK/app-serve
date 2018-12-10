@@ -35,6 +35,7 @@
     </body>
     <script src="js/libs/video.js"></script>
     <script src="js/libs/jquery-2.1.3.min.js"></script>
+    <script src="https://unpkg.com/current-device/umd/current-device.min.js"></script>
 
     <script src="js/plugins/videojs-event-tracking.js"></script>
     
