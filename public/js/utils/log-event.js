@@ -26,6 +26,13 @@
               'browser_online' : browser_online,
               'time' : time,
             };
+            $.ajaxSetup({
+                  headers: {
+                      // 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                      'X-CSRF-TOKEN': service_code.token,
+                      'token': service_code.token,
+                  }
+            });
             $.ajax({
                 url: url,
                 type: "POST",

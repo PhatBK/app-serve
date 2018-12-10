@@ -48,7 +48,7 @@
     <script src="js/utils/media-event.js"></script>
     <script>
       const firstRequest = () => {
-            alert("first request");
+            
       };
     </script>
 </html>
