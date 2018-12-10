@@ -1,9 +1,6 @@
 (function(window, videojs){
 
-        let player = videojs('videojs-event-tracking-player');
-        player.eventTracking();
-
-        var host = 'http://192.168.1.18:9001/logs';
+        let host = 'http://10.85.1.207:9001/logs';
 
         const user_agent = navigator.userAgent;
         const browser_code = navigator.appCodeName;
@@ -14,6 +11,9 @@
         const browser_online = navigator.onLine;
         const browser_name =  navigator.appName;
         const user_platform = navigator.platform;
+
+        console.log(service_code.token);
+        // console.log(ip.ip);
 
         const ajaxSendDataNodejs = (data, event, url, time) => {
             let dataSend = [];
@@ -64,10 +64,12 @@
             });
         }
 
+        let player = videojs('videojs-event-tracking-player');
         player.eventTracking({
             performance: function(data) {
                 url = host + '/event/performance';
-                time = Date.now();
+                // time = Date.now();
+                time = new Date();
                 ajaxSendDataNodejs(data, 'performance', url, time);
             }
         });
