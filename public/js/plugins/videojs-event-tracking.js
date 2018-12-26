@@ -1,9 +1,3 @@
-/**
- * videojs-event-tracking
- * @version 0.0.9
- * @copyright 2018 spodlecki <s.podlecki@gmail.com>
- * @license MIT
- */
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('video.js')) :
 	typeof define === 'function' && define.amd ? define(['video.js'], factory) :
@@ -12,25 +6,8 @@
 
 videojs = 'default' in videojs ? videojs['default'] : videojs;
 
-var version = "0.0.9";
+var version = "0.0.1";
 
-/**
- * @function BufferTracking
- * @param    {Object} [options={}]
- *           An object of options left to the plugin author to define.
- *
- * Tracks when the video player is marked as buffering and waits until the player
- * has made some progress.
- *
- * Example Usage:
- * player.on('tracking:buffered', (e, data) => console.log(data))
- *
- * Data Attributes:
- * => currentTime:    current second of video playback
- * => readyState:     video#readyState value
- * => secondsToLoad:  Total amount of time in seconds buffering took
- * => bufferCount:    Total buffer events for this source
- */
 
 var BufferTracking = function BufferTracking(config) {
   var _this = this;
@@ -85,7 +62,7 @@ var BufferTracking = function BufferTracking(config) {
       bufferStart = false;
       bufferPosition = false;
       bufferCount++;
-
+      // kích hoạt sự kiện và lưu lại dữ liệu
       _this.trigger('tracking:buffered', {
         currentTime: +curTime,
         readyState: +readyState,
@@ -94,7 +71,8 @@ var BufferTracking = function BufferTracking(config) {
       });
     }
   };
-
+  
+  // Lắng nghe các sự kiện
   this.on('dispose', reset);
   this.on('loadstart', reset);
   this.on('ended', reset);
@@ -103,19 +81,6 @@ var BufferTracking = function BufferTracking(config) {
   this.on('timeupdate', onTimeupdate);
 };
 
-/**
- * Tracks when users pause the video.
- *
- * Example Usage:
- * player.on('tracking:pause', (e, data) => console.log(data))
- *
- * Data Attributes:
- * => pauseCount:       Total number of Pause events triggered
- *
- * @function PauseTracking
- * @param    {Object} [config={}]
- *           An object of config left to the plugin author to define.
- */
 
 var PauseTracking = function PauseTracking(config) {
   var player = this;
@@ -145,26 +110,6 @@ var PauseTracking = function PauseTracking(config) {
   });
 };
 
-/**
- * Track Overall Percentile (1st, 2nd, 3rd, and 4th) of Completion
- * This event triggers each quarter of a video.
- *
- * Example Usage:
- * player.on('tracking:first-quarter', (e, data) => console.log(data))
- * player.on('tracking:second-quarter', (e, data) => console.log(data))
- * player.on('tracking:third-quarter', (e, data) => console.log(data))
- * player.on('tracking:fourth-quarter', (e, data) => console.log(data))
- *
- * Data Attributes:
- * => pauseCount:       Total number of Pause events triggered
- * => seekCount:        Total number of Seek events triggered
- * => currentTime:      Current second video is on
- * => duration:         Total duration of video
- *
- * @function PercentileTracking
- * @param    {Object} [config={}]
- *           An object of config left to the plugin author to define.
- */
 
 var PercentileTracking = function PercentileTracking(config) {
   var player = this;
@@ -195,6 +140,7 @@ var PercentileTracking = function PercentileTracking(config) {
   player.on('loadstart', reset);
   player.on('tracking:pause', incPause);
   player.on('tracking:seek', incSeek);
+
   player.on('timeupdate', function () {
     var curTime = +player.currentTime().toFixed(0);
     var data = {
@@ -219,6 +165,7 @@ var PercentileTracking = function PercentileTracking(config) {
         break;
     }
   });
+
   player.on('ended', function () {
     var data = {
       seekCount: seekCount,
@@ -242,27 +189,26 @@ var PercentileTracking = function PercentileTracking(config) {
   });
 };
 
-/**
- * Track Overall Performance
- * This event triggers when the player has changed sources, has ended, or
- * has been destroyed.
- *
- * Example Usage:
- * player.on('tracking:performance', (e, data) => console.log(data))
- *
- * Data Attributes:
- * => pauseCount:       Total number of Pause events triggered
- * => seekCount:        Total number of Seek events triggered
- * => bufferCount:      Total number of Buffer events triggered
- * => totalDuration:    Total duration provided by the file
- * => watchedDuration:  Total number of seconds watched (not seeked past)
- * => bufferDuration:   Total seconds that buffering has occured
- * => initialLoadTime:  Seconds it took for the initial frame to appear
- *
- * @function PerformanceTracking
- * @param    {Object} [config={}]
- *           An object of config left to the plugin author to define.
- */
+var ErrorTracking = function ErrorTracking(config) {
+
+  player.on('error', function() {
+    let error_code = player.error().code;
+    let error_message = player.error().message;
+    let error_type = null;
+    for (let i = 0; i < MEDIA_ERRORS.length; i++) {
+        if (error_code === i) {
+            error_type = MEDIA_ERRORS[i];
+        }
+    }
+    var data = {
+        'error_code': error_code,
+        'error_type' : error_type,
+        'error_message': error_message,
+    }
+    player.trigger('tracking:error', data);
+  });
+};
+
 var PerformanceTracking = function PerformanceTracking(config) {
   if (typeof config === 'undefined' || typeof config.performance !== 'function') {
     return;
@@ -350,23 +296,6 @@ var PerformanceTracking = function PerformanceTracking(config) {
   });
 };
 
-/**
- * Track Initial Play Event
- * This event is triggered when the video has been played for the first time.
- * If you are looking to track play events, simply listen on the player for a normal
- * "play" or "playing" event.
- *
- * Example Usage:
- * player.on('tracking:firstplay', (e, data) => console.log(data))
- *
- * Data Attributes:
- * => secondsToLoad: Total number of seconds between the player initializing
- *                   a play request and when the first frame begins.
- *
- * @function PlayTracking
- * @param    {Object} [config={}]
- *           An object of config left to the plugin author to define.
- */
 
 var PlayTracking = function PlayTracking(config) {
   var _this = this;
@@ -408,22 +337,6 @@ var PlayTracking = function PlayTracking(config) {
   this.on('playing', onPlaying);
 };
 
-/**
- * Track Seeking Events
- * During playback, we are tracking how many times a person seeks, and
- * the position a user has seeked to.
- *
- * Example Usage:
- * player.on('tracking:seek', (e, data) => console.log(data))
- *
- * Data Attributes:
- * => seekCount: total number of seeks that has occuring during this file
- * => seekTo: Position, in seconds, that has been seeked to.
- *
- * @function SeekTracking
- * @param    {Object} [config={}]
- *           An object of config left to the plugin author to define.
- */
 var SeekTracking = function SeekTracking(config) {
   var player = this;
   var seekCount = 0;
@@ -454,17 +367,10 @@ var SeekTracking = function SeekTracking(config) {
   });
 };
 
-// Cross-compatibility for Video.js 5 and 6.
+
 var registerPlugin = videojs.registerPlugin || videojs.plugin;
 var getPlugin = videojs.getPlugin || videojs.plugin;
 
-/**
- * Event Tracking for VideoJS
- *
- * @function eventTracking
- * @param    {Object} [options={}]
- *           An object of options left to the plugin author to define.
- */
 var eventTracking = function eventTracking(options) {
   PauseTracking.apply(this, arguments);
   BufferTracking.apply(this, arguments);
@@ -472,14 +378,13 @@ var eventTracking = function eventTracking(options) {
   PlayTracking.apply(this, arguments);
   SeekTracking.apply(this, arguments);
   PerformanceTracking.apply(this, arguments);
+  ErrorTracking.apply(this, arguments);
 };
 
-// Register the plugin with video.js, avoid double registration
 if (typeof getPlugin('eventTracking') === 'undefined') {
   registerPlugin('eventTracking', eventTracking);
 }
 
-// Include the version number.
 eventTracking.VERSION = version;
 
 return eventTracking;
