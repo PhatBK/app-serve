@@ -1,7 +1,9 @@
-// (function(window, videojs){
 
+let player = videojs('videojs-event-tracking-player');
 let host = logging_host.host;
 let UserID = null;
+let current_host = window.location.protocol + '://' + window.location.hostname;
+let video_src = media_infos.current_src.substring(current_host.length -1, media_infos.current_src.length);
 
 const TimeNormalFormat = (time) => {
     let normal = time.getFullYear() + "-" 
@@ -34,9 +36,6 @@ function checkUserID() {
         UserID = findCookie('user_id');
     }
 };
-
-let current_host = window.location.protocol + '://' + window.location.hostname;
-let video_src = media_infos.current_src.substring(current_host.length -1, media_infos.current_src.length);
 
 const ajaxSendDataNodejs = (data, event, url, time) => {
     let reports = {
@@ -95,7 +94,6 @@ const ajaxSendDataPHP = (data, event, url) => {
     });
 };
       
-let player = videojs('videojs-event-tracking-player');
 player.eventTracking({
     performance: function(data) {
         url = host + '/event/performance';
@@ -104,25 +102,10 @@ player.eventTracking({
     }
 });
 
-player.on('error', function(e, data) {
-    
-    let error_code = player.error().code;
-    let error_message = player.error().message;
-    let error_type = null;
-    for (let i = 0; i < MEDIA_ERRORS.length; i++) {
-        if (error_code === i) {
-            error_type = MEDIA_ERRORS[i];
-        }
-    }
-    let data_error = {
-        'error_code': error_code,
-        'error_type' : error_type,
-        'error_message': error_message,
-    }
+player.on('tracking:error', function(e, data) {
     let time = new Date();
     let url = host + '/event/errors';
-    ajaxSendDataNodejs(data_error, e, url, TimeNormalFormat(time));
-
+    ajaxSendDataNodejs(data, e, url, TimeNormalFormat(time));
 });
 
 player.on('tracking:firstplay', function(e, data) {
@@ -220,5 +203,3 @@ player.on('tracking:buffer_miss', function(e, data) {
     ajaxSendDataNodejs(data, e, url, TimeNormalFormat(time));
 
 });
-
-// }(window, window.videojs));
